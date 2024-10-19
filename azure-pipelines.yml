@@ -13,6 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  imageName: 'PartsE2E'
 
 steps:
 - task: NuGetToolInstaller@1
