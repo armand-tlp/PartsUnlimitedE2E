@@ -1,8 +1,3 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
 trigger:
 - master
 
@@ -14,6 +9,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   imageName: 'PartsE2E'
+  tag: '$(Build.BuildId)'  # Tag the Docker image with the build ID
 
 steps:
 - task: NuGetToolInstaller@1
@@ -33,3 +29,21 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+# Docker Build and Push Steps
+- task: Docker@2
+  displayName: 'Build Docker Image'
+  inputs:
+    repository: '$(imageName)'  # The image name variable is used here
+    command: 'build'
+    Dockerfile: '**/Dockerfile'  # Path to Dockerfile (ensure this is correct)
+    tags: |
+      $(tag)
+
+- task: Docker@2
+  displayName: 'Push Docker Image to Registry'
+  inputs:
+    repository: '$(imageName)'  # The image name variable is used here
+    command: 'push'
+    tags: |
+      $(tag)
