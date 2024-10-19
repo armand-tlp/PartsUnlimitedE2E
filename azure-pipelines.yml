@@ -5,7 +5,7 @@ pool:
   vmImage: 'vs2017-win2016'  # Use the Visual Studio 2017 image
 
 variables:
-  solution: '**/*.sln'  # Look for any .sln (solution) file
+  solution: '**/*.sln'  # Solution file search pattern
   buildPlatform: 'Any CPU'  # Target platform
   buildConfiguration: 'Release'  # Build configuration
 
@@ -28,8 +28,7 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-# Publish Build Artifacts (Optional, if you want to store the build output)
-- task: PublishBuildArtifacts@1
+- task: PublishBuildArtifacts@1  # Publish the build output as an artifact
   inputs:
     PathtoPublish: '$(build.artifactStagingDirectory)'
     ArtifactName: 'drop'
