@@ -28,6 +28,14 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+# Install the missing SDK via PowerShell if needed
+- powershell: |
+    Install-Module -Name 'vswhere' -Scope CurrentUser
+    &"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -requires Microsoft.VisualStudio.Workload.ManagedDesktop
+    if ($?) {
+        # Specific commands to install or log the architecture tools 
+    }
+  displayName: 'Install SDK Tools'
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
